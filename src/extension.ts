@@ -10,7 +10,7 @@ import { StatusBarToggler } from "./extension/statusbartoggler";
 export function activate(context: vscode.ExtensionContext) {
     const telemetry = vscode.workspace.getConfiguration("telemetry");
     const enableCrashReporting = telemetry.get("enableCrashReporter");
-    if (enableCrashReporting) {
+    if (false) {
         // Leaving default integrations on captures crashes from other extension hosts
         // Turning this off fixes that issue and still allows us to capture errors manually
         Sentry.init({

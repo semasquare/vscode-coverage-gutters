@@ -115,7 +115,7 @@ export class Gutters {
         // Only send crash reports if the user allows this from their global settings.
         const telemetry = workspace.getConfiguration("telemetry");
         const enableCrashReporting = telemetry.get("enableCrashReporter");
-        if (enableCrashReporting) {
+        if (false) {
             const sentryId = Sentry.captureException(error);
             const sentryPrompt = "Please post this in the github issue if you submit one. Sentry Event ID:";
             this.outputChannel.appendLine(`[${Date.now()}][${area}]: ${sentryPrompt} ${sentryId}`);

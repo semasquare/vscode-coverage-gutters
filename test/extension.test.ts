@@ -11,7 +11,7 @@ suite("Extension Tests", function() {
         // being set in the example.code-workspace setting file as the coverage report
         // is in the root of the node folder and not inside the default /coverage
         await waitForExtension(2000);
-        const extension = await vscode.extensions.getExtension("ryanluker.vscode-coverage-gutters");
+        const extension = await vscode.extensions.getExtension("semasquare.vscode-coverage-gutters");
         if (!extension) {
             throw new Error("Could not load extension");
         }
@@ -25,7 +25,7 @@ suite("Extension Tests", function() {
 
     test("Run display coverage on a test file that has coverages generated remotely @integration", async () => {
         await waitForExtension(2000);
-        const extension = await vscode.extensions.getExtension("ryanluker.vscode-coverage-gutters");
+        const extension = await vscode.extensions.getExtension("semasquare.vscode-coverage-gutters");
         if (!extension) {
             throw new Error("Could not load extension");
         }
@@ -49,7 +49,7 @@ suite("Extension Tests", function() {
 
     test("Run display coverage on node test file with large lcov.info file @integration", async () => {
         await waitForExtension(2000);
-        const extension = await vscode.extensions.getExtension("ryanluker.vscode-coverage-gutters");
+        const extension = await vscode.extensions.getExtension("semasquare.vscode-coverage-gutters");
         if (!extension) {
             throw new Error("Could not load extension");
         }
@@ -73,7 +73,7 @@ suite("Extension Tests", function() {
 
     test("Run display coverage on python test file @integration", async () => {
         await waitForExtension(2000);
-        const extension = await vscode.extensions.getExtension("ryanluker.vscode-coverage-gutters");
+        const extension = await vscode.extensions.getExtension("semasquare.vscode-coverage-gutters");
         if (!extension) {
             throw new Error("Could not load extension");
         }
@@ -95,7 +95,7 @@ suite("Extension Tests", function() {
 
     test("Run display coverage on php test file number 1 @integration", async () => {
         await waitForExtension(2000);
-        const extension = await vscode.extensions.getExtension("ryanluker.vscode-coverage-gutters");
+        const extension = await vscode.extensions.getExtension("semasquare.vscode-coverage-gutters");
         if (!extension) {
             throw new Error("Could not load extension");
         }
@@ -117,7 +117,7 @@ suite("Extension Tests", function() {
 
     test("Run display coverage on php test file number 2 @integration", async () => {
         await waitForExtension(2000);
-        const extension = await vscode.extensions.getExtension("ryanluker.vscode-coverage-gutters");
+        const extension = await vscode.extensions.getExtension("semasquare.vscode-coverage-gutters");
         if (!extension) {
             throw new Error("Could not load extension");
         }
@@ -139,7 +139,7 @@ suite("Extension Tests", function() {
 
     test("Run display coverage on php test file number 3 @integration", async () => {
         await waitForExtension(2000);
-        const extension = await vscode.extensions.getExtension("ryanluker.vscode-coverage-gutters");
+        const extension = await vscode.extensions.getExtension("semasquare.vscode-coverage-gutters");
         if (!extension) {
             throw new Error("Could not load extension");
         }
@@ -161,7 +161,7 @@ suite("Extension Tests", function() {
 
     test("Run display coverage on java test file @integration", async () => {
         await waitForExtension(2000);
-        const extension = await vscode.extensions.getExtension("ryanluker.vscode-coverage-gutters");
+        const extension = await vscode.extensions.getExtension("semasquare.vscode-coverage-gutters");
         if (!extension) {
             throw new Error("Could not load extension");
         }
@@ -183,7 +183,7 @@ suite("Extension Tests", function() {
 
     test("Run display coverage on node test file with large code base @integration", async () => {
         await waitForExtension(2000);
-        const extension = await vscode.extensions.getExtension("ryanluker.vscode-coverage-gutters");
+        const extension = await vscode.extensions.getExtension("semasquare.vscode-coverage-gutters");
         if (!extension) {
             throw new Error("Could not load extension");
         }
@@ -215,7 +215,7 @@ suite("Extension Tests", function() {
 
     test("Run watch and open files to see coverage @integration", async () => {
         await waitForExtension(2000);
-        const extension = await vscode.extensions.getExtension("ryanluker.vscode-coverage-gutters");
+        const extension = await vscode.extensions.getExtension("semasquare.vscode-coverage-gutters");
         if (!extension) {
             throw new Error("Could not load extension");
         }

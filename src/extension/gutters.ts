@@ -1,36 +1,37 @@
-import * as Sentry from "@sentry/node";
 import {
     OutputChannel,
-    Uri,
-    ViewColumn,
     window,
-    workspace,
 } from "vscode";
 import { Coverage } from "../coverage-system/coverage";
 import { CoverageService } from "../coverage-system/coverageservice";
 import { Config } from "./config";
+import { CrashReporter } from "./crashreporter";
 import { StatusBarToggler } from "./statusbartoggler";
-
+import { PreviewPanel } from "./webview";
 export class Gutters {
     private coverage: Coverage;
     private outputChannel: OutputChannel;
     private statusBar: StatusBarToggler;
     private coverageService: CoverageService;
+    private crashReporter: CrashReporter;
 
     constructor(
         configStore: Config,
         coverage: Coverage,
         outputChannel: OutputChannel,
         statusBar: StatusBarToggler,
+        crashReporter: CrashReporter,
     ) {
         this.coverage = coverage;
         this.outputChannel = outputChannel;
         this.statusBar = statusBar;
+        this.crashReporter = crashReporter;
 
         this.coverageService = new CoverageService(
             configStore,
             this.outputChannel,
             statusBar,
+            crashReporter,
         );
     }
 
@@ -41,19 +42,12 @@ export class Gutters {
                 coverageReports,
                 "Choose a Coverage Report to preview.",
             );
-            if (!pickedReport) { throw new Error("Could not show Coverage Report file!"); }
-
-            // Construct the webview panel for the coverage report to live in
-            const previewPanel = window.createWebviewPanel(
-                "coverageReportPreview",
-                "Preview Coverage Report",
-                ViewColumn.One,
-            );
-
-            // Read in the report html and send it to the webview
-            const reportUri = Uri.file(pickedReport);
-            const reportHtml = await workspace.openTextDocument(reportUri);
-            previewPanel.webview.html = reportHtml.getText();
+            if (!pickedReport) {
+                window.showWarningMessage("Could not show Coverage Report file!");
+                return;
+            }
+            const previewPanel = new PreviewPanel(pickedReport);
+            await previewPanel.createWebView();
         } catch (error) {
             this.handleError("previewCoverageReport", error);
         }
@@ -82,7 +76,7 @@ export class Gutters {
             this.statusBar.toggle(false);
             this.coverageService.dispose();
         } catch (error) {
-            this.handleError("removeWatch", error, false);
+            this.handleError("removeWatch", error);
         }
     }
 
@@ -90,7 +84,7 @@ export class Gutters {
         try {
             this.coverageService.removeCoverageForCurrentEditor();
         } catch (error) {
-            this.handleError("removeCoverageForActiveFile", error, false);
+            this.handleError("removeCoverageForActiveFile", error);
         }
     }
 
@@ -99,25 +93,18 @@ export class Gutters {
             this.coverageService.dispose();
             this.statusBar.dispose();
         } catch (error) {
-            this.handleError("dispose", error, false);
+            this.handleError("dispose", error);
         }
     }
 
-    private handleError(area: string, error: Error, showMessage: boolean = true) {
+    private handleError(area: string, error: Error) {
         const message = error.message ? error.message : error;
         const stackTrace = error.stack;
-        if (showMessage) {
-            window.showWarningMessage(message.toString());
-        }
         this.outputChannel.appendLine(`[${Date.now()}][${area}]: ${message}`);
         this.outputChannel.appendLine(`[${Date.now()}][${area}]: ${stackTrace}`);
 
-        // Only send crash reports if the user allows this from their global settings.
-        const telemetry = workspace.getConfiguration("telemetry");
-        const enableCrashReporting = telemetry.get("enableCrashReporter");
         if (false) {
-            const sentryId = Sentry.captureException(error);
-            const sentryPrompt = "Please post this in the github issue if you submit one. Sentry Event ID:";
+            const [ sentryId, sentryPrompt ] = this.crashReporter.captureError(error);
             this.outputChannel.appendLine(`[${Date.now()}][${area}]: ${sentryPrompt} ${sentryId}`);
         }
     }

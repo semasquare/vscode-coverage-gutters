@@ -7,7 +7,7 @@ import {
 export class CrashReporter {
     private enableCrashReporting: boolean | undefined;
 
-    constructor() {        
+    constructor() {
         this.enableCrashReporting = false;
 
         if (this.enableCrashReporting) {
